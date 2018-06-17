@@ -30,8 +30,7 @@ def get_data():
     parsed_html = get_booking_page(offset)
     all_offset = parsed_html.find_all("li", {'class': 'sr_pagination_item'})[-1].get_text()
 
-    # change hotels to set if you like to remove duplicate Hotels returned by Booking
-    hotels = []
+    hotels = set()
     number = 0
     for i in range(int(all_offset)):
         offset += 15
@@ -41,7 +40,7 @@ def get_data():
 
         for ho in hotel:
             name = ho.find('a', {'class': 'jq_tooltip'})['title']
-            hotels.append(str(number) + ' : ' + name)
+            hotels.add(str(number) + ' : ' + name)
             number += 1
 
     import json
