@@ -21,6 +21,33 @@ def get_booking_page(offset):
       return parsed_html
 
 
+def get_data():
+    '''
+    Get all accomodations in Macedonia and save them in file
+    :return: hotels-in-macedonia.txt file
+    '''
+    offset = 15
+    parsed_html = get_booking_page(offset)
+    all_offset = parsed_html.find_all("li", {'class': 'sr_pagination_item'})[-1].get_text()
+
+    # change hotels to set if you like to remove duplicate Hotels returned by Booking
+    hotels = []
+    number = 0
+    for i in range(int(all_offset)):
+        offset += 15
+        number+=1
+        parsed_html = get_booking_page(offset)
+        hotel = parsed_html.find_all("div", {"class": "sr_item"})
+
+        for ho in hotel:
+            name = ho.find('a', {'class': 'jq_tooltip'})['title']
+            hotels.append(str(number) + ' : ' + name)
+            number += 1
+
+    return hotels
+
+    print('All accommodations are saved.')
+    print('You can find them in hotels-in-macedonia.txt file')
 
 if __name__ == "__main__":
     get_data()
