@@ -3,7 +3,11 @@
 Web scraper that downloads all of the accommodations in Macedonia and save them in file.
 
 ## Installation
-All of the requirements will be automatically created, just create virtual environment and run:
+Create virtual environment and run:
+
+`pip install -r requirements.txt`
+
+After that just run booking script:
 
 `python booking.py`
 

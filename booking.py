@@ -1,9 +1,7 @@
-import sys
-sys.path.insert(0, "./lib/python3.5/site-packages")
-
-
-import os
-os.system('pip install -r ./requirements.txt')
+# Uncomment for automatic installation of the requirements#import sys
+#sys.path.insert(0, "./lib/python3.5/site-packages")
+#import os
+#os.system('pip install -r ./requirements.txt')
 
 import requests
 from bs4 import BeautifulSoup
