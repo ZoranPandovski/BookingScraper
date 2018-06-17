@@ -20,4 +20,5 @@ After that just run booking script:
 * Add option for choosing a time frame.
 * Add option for choosing the number of rooms.
 * Add option for choosing file format.
-* Setup travis cli
+* Setup travis ci
+* Add tests
