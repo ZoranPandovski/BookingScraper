@@ -4,7 +4,7 @@
 
 # Booking site web scraper
 
-Web scraper that downloads all of the accommodations in Macedonia and save them in file.
+Web scraper that downloads all of the accommodations in Macedonia and saves them in a file.
 
 ## Installation
 Create virtual environment and run:
@@ -22,3 +22,10 @@ After that just run booking script:
 * Add option for choosing file format.
 * Setup travis ci
 * Add tests
+
+## Disclaimer
+Data fetched from booking is only for personal use, you are not allowed to copy and paste content from Booking.com on to your own or third party pages (including social media pages such as Facebook, Twitter, Instagram etc.).
+
+This applies to all types of content that can be found on Booking.com pages, including but not limited to hotel descriptions, reviews, hotel and room photos, hotel facility information, and prices. Moreover, this restriction also applies to content from Booking.com partner hotel websites and Booking Holdings Group company brands: such as Agoda, Priceline, Kayak, OpenTable, Rentalcars.
+
+Clause 4.1.5 from Booking.com Affiliate Agreement: The Affiliate shall not programmatically evaluate and extract information (including guest reviews) from any part of the Booking.com Website (e.g. screen scrape).
