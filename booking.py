@@ -1,4 +1,7 @@
-# Uncomment for automatic installation of the requirements#import sys
+#! /usr/bin/env python3
+
+# Uncomment for automatic installation of the requirements
+#import sys
 #sys.path.insert(0, "./lib/python3.5/site-packages")
 #import os
 #os.system('pip install -r ./requirements.txt')
