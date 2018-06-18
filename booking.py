@@ -65,7 +65,7 @@ def get_data():
 
     import json
     with open('hotels-in-macedonia.txt', 'w', encoding='utf-8') as outfile:
-        json.dump(hotels, outfile, indent=2, ensure_ascii=False)
+        json.dump(list(hotels), outfile, indent=2, ensure_ascii=False)
 
     print('All accommodations are saved.')
     print('You can find them in hotels-in-macedonia.txt file')
