@@ -40,10 +40,10 @@ def get_booking_page(offset):
     return parsed_html
 
 
-def get_data():
+def get_data(out_format=None):
     '''
     Get all accomodations in Macedonia and save them in file
-    :return: hotels-in-macedonia.txt file
+    :return: hotels-in-macedonia.txt or hotels-in-macedonia.xlsx file
     '''
     offset = 15
     parsed_html = get_booking_page(offset)
@@ -63,12 +63,36 @@ def get_data():
             hotels.add(str(number) + ' : ' + name)
             number += 1
 
-    import json
-    with open('hotels-in-macedonia.txt', 'w', encoding='utf-8') as outfile:
-        json.dump(list(hotels), outfile, indent=2, ensure_ascii=False)
+    if out_format is None:
+        import json
+        with open('hotels-in-macedonia.txt', 'w', encoding='utf-8') as outfile:
+            json.dump(list(hotels), outfile, indent=2, ensure_ascii=False)
 
-    print('All accommodations are saved.')
-    print('You can find them in hotels-in-macedonia.txt file')
+        print('All accommodations are saved.')
+        print('You can find them in hotels-in-macedonia.txt file')
+
+    elif out_format == 'excel':
+        from openpyxl import Workbook
+        wb = Workbook()
+        ws = wb.active
+
+        heading1 = '#'
+        heading2 = 'Accommodation'
+        ws.cell(row=1, column=1).value = heading1
+        ws.cell(row=1, column=2).value = heading2
+
+        for i, hotel in enumerate(hotels):
+            # Extract number and title from string
+            tokens = hotel.split()
+            n = tokens[0]
+            title = ' '.join(tokens[2:])
+
+            ws.cell(row=i+2, column=1).value = n
+            ws.cell(row=i+2, column=2).value = title
+
+        wb.save('hotels-in-macedonia.xlsx')
+        print('All accommodations are saved.')
+        print('You can find them in hotels-in-macedonia.xlsx file')
 
 if __name__ == "__main__":
     get_data()
