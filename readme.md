@@ -1,4 +1,5 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a17cb028c594405e9235c724d6b45b50)](https://app.codacy.com/app/ZoranPandovski/BookingScraper?utm_source=github.com&utm_medium=referral&utm_content=ZoranPandovski/BookingScraper&utm_campaign=badger)
+[![BCH compliance](https://bettercodehub.com/edge/badge/ZoranPandovski/BookingScraper?branch=master)](https://bettercodehub.com/)
 [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://perso.crans.org/besson/LICENSE.html)
 
 
