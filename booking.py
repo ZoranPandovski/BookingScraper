@@ -36,7 +36,6 @@ def get_booking_page(offset):
                      ' Gecko/20100101 Firefox/48.0'})
     html = r.content
     parsed_html = BeautifulSoup(html, 'lxml')
-    print('Returning page')
     return parsed_html
 
 
@@ -67,13 +66,16 @@ def get_data():
 
 
 def save_data(data, out_format=None):
+    '''
+    Saves hotels list in file
+    :param data: hotels list
+    :param out_format: csv or excel
+    :return:
+    '''
     if out_format is None:
         import json
         with open('hotels-in-macedonia.txt', 'w', encoding='utf-8') as outfile:
             json.dump(list(data), outfile, indent=2, ensure_ascii=False)
-
-        print('All accommodations are saved.')
-        print('You can find them in hotels-in-macedonia.txt file')
 
     elif out_format == 'excel':
         from openpyxl import Workbook
@@ -95,8 +97,9 @@ def save_data(data, out_format=None):
             ws.cell(row=i + 2, column=2).value = title
 
         wb.save('hotels-in-macedonia.xlsx')
-        print('All accommodations are saved.')
-        print('You can find them in hotels-in-macedonia.xlsx file')
+
+    print('All accommodations are saved.')
+    print('You can find them in hotels-in-macedonia.xlsx file')
 
 if __name__ == "__main__":
     get_data()
