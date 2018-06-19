@@ -40,7 +40,7 @@ def get_booking_page(offset):
     return parsed_html
 
 
-def get_data(out_format=None):
+def get_data():
     '''
     Get all accomodations in Macedonia and save them in file
     :return: hotels-in-macedonia.txt or hotels-in-macedonia.xlsx file
@@ -63,10 +63,14 @@ def get_data(out_format=None):
             hotels.add(str(number) + ' : ' + name)
             number += 1
 
+    save_data(hotels)
+
+
+def save_data(data, out_format=None):
     if out_format is None:
         import json
         with open('hotels-in-macedonia.txt', 'w', encoding='utf-8') as outfile:
-            json.dump(list(hotels), outfile, indent=2, ensure_ascii=False)
+            json.dump(list(data), outfile, indent=2, ensure_ascii=False)
 
         print('All accommodations are saved.')
         print('You can find them in hotels-in-macedonia.txt file')
@@ -81,14 +85,14 @@ def get_data(out_format=None):
         ws.cell(row=1, column=1).value = heading1
         ws.cell(row=1, column=2).value = heading2
 
-        for i, hotel in enumerate(hotels):
+        for i, hotel in enumerate(data):
             # Extract number and title from string
             tokens = hotel.split()
             n = tokens[0]
             title = ' '.join(tokens[2:])
 
-            ws.cell(row=i+2, column=1).value = n
-            ws.cell(row=i+2, column=2).value = title
+            ws.cell(row=i + 2, column=1).value = n
+            ws.cell(row=i + 2, column=2).value = title
 
         wb.save('hotels-in-macedonia.xlsx')
         print('All accommodations are saved.')
