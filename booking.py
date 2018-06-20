@@ -74,7 +74,8 @@ def save_data(data, out_format=None):
     '''
     if out_format is None:
         import json
-        with open('hotels-in-macedonia.txt', 'w', encoding='utf-8') as outfile:
+        file_name = 'hotels-in-macedonia.txt'
+        with open(file_name, 'w', encoding='utf-8') as outfile:
             json.dump(list(data), outfile, indent=2, ensure_ascii=False)
 
     elif out_format == 'excel':
@@ -96,11 +97,12 @@ def save_data(data, out_format=None):
             ws.cell(row=i + 2, column=1).value = n
             ws.cell(row=i + 2, column=2).value = title
 
-        wb.save('hotels-in-macedonia.xlsx')
+
+        file_name = 'hotels-in-macedonia.xlsx'
+        wb.save(file_name)
 
     print('All accommodations are saved.')
-    print('You can find them in hotels-in-macedonia.xlsx file')
+    print('You can find them in', file_name, 'file')
 
 if __name__ == "__main__":
     get_data()
-
