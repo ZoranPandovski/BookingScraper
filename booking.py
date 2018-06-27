@@ -42,7 +42,7 @@ def get_booking_page(offset):
 def get_data():
     '''
     Get all accomodations in Macedonia and save them in file
-    :return: hotels-in-macedonia.txt or hotels-in-macedonia.xlsx file
+    :return: hotels-in-macedonia.{txt/csv/xlsx} file
     '''
     offset = 15
     parsed_html = get_booking_page(offset)
@@ -69,7 +69,7 @@ def save_data(data, out_format=None):
     '''
     Saves hotels list in file
     :param data: hotels list
-    :param out_format: csv or excel
+    :param out_format: json, csv or excel
     :return:
     '''
     if out_format is None:
@@ -88,18 +88,30 @@ def save_data(data, out_format=None):
         ws.cell(row=1, column=1).value = heading1
         ws.cell(row=1, column=2).value = heading2
 
-        for i, hotel in enumerate(data):
+        for i, item in enumerate(data):
             # Extract number and title from string
-            tokens = hotel.split()
+            tokens = item.split()
             n = tokens[0]
             title = ' '.join(tokens[2:])
 
             ws.cell(row=i + 2, column=1).value = n
             ws.cell(row=i + 2, column=2).value = title
 
-
         file_name = 'hotels-in-macedonia.xlsx'
         wb.save(file_name)
+
+    elif out_format == 'csv':
+        file_name = 'hotels-in-macedonia.csv'
+        with open(file_name, 'w', encoding='utf-8') as outfile:
+            for i, item in enumerate(data):
+                # Extract number and title from string
+                tokens = item.split()
+                n = tokens[0]
+                title = ' '.join(tokens[2:])
+
+                s = n + ', ' + title + '\n'
+                outfile.write(s)
+
 
     print('All accommodations are saved.')
     print('You can find them in', file_name, 'file')
