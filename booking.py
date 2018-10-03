@@ -10,7 +10,7 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def get_booking_page(offset, rooms):
+def get_booking_page(offset, rooms, country):
     '''
     Make request to booking page and parse html
     :param offset:
@@ -28,10 +28,11 @@ def get_booking_page(offset, rooms):
             'index_postcard=0&label_click=undef' \
             '&no_rooms=1&postcard=0&raw_dest_type=country&room1=' \
             'A%2CA&sb_price' \
-            '_type=total&src=searchresults&src_elem=sb&ss=Macedonia&ss_all=' \
-            '0&ssb=empty&sshis=0&ssne=Macedonia' \
-            '&ssne_untouched=Macedonia&rows=15&offset='.format(
-                rooms=rooms
+            '_type=total&src=searchresults&src_elem=sb&ss={country}&ss_all=' \
+            '0&ssb=empty&sshis=0&ssne={country}' \
+            '&ssne_untouched={country}&rows=15&offset='.format(
+                rooms=rooms,
+                country=country.replace(' ', '+')
             ) + str(offset)
     r = requests.get(url, headers=
       {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0)'
@@ -41,13 +42,13 @@ def get_booking_page(offset, rooms):
     return parsed_html
 
 
-def get_data(rooms=1):
+def get_data(rooms=1, country='Macedonia'):
     '''
     Get all accomodations in Macedonia and save them in file
     :return: hotels-in-macedonia.{txt/csv/xlsx} file
     '''
     offset = 15
-    parsed_html = get_booking_page(offset, rooms)
+    parsed_html = get_booking_page(offset, rooms, country)
     all_offset = parsed_html.find_all('li', {'class':
                                       'sr_pagination_item'})[-1].get_text()
 
@@ -56,7 +57,7 @@ def get_data(rooms=1):
     for i in range(int(all_offset)):
         offset += 15
         number+=1
-        parsed_html = get_booking_page(offset, rooms)
+        parsed_html = get_booking_page(offset, rooms, country)
         hotel = parsed_html.find_all('div', {'class': 'sr_item'})
 
         for ho in hotel:
@@ -64,19 +65,19 @@ def get_data(rooms=1):
             hotels.add(str(number) + ' : ' + name)
             number += 1
 
-    save_data(hotels)
+    save_data(hotels, country=country)
 
 
-def save_data(data, out_format=None):
+def save_data(data, out_format=None, country='Macedonia'):
     '''
     Saves hotels list in file
     :param data: hotels list
     :param out_format: json, csv or excel
     :return:
     '''
-    if out_format is None:
+    if out_format == 'json' or out_format is None:
         import json
-        file_name = 'hotels-in-macedonia.txt'
+        file_name = 'hotels-in-{country}.txt'.format(country=country.replace(" ", "-"))
         with open(file_name, 'w', encoding='utf-8') as outfile:
             json.dump(list(data), outfile, indent=2, ensure_ascii=False)
 
@@ -99,11 +100,11 @@ def save_data(data, out_format=None):
             ws.cell(row=i + 2, column=1).value = n
             ws.cell(row=i + 2, column=2).value = title
 
-        file_name = 'hotels-in-macedonia.xlsx'
+        file_name = 'hotels-in-{country}.txt'.format(country=country.replace(" ", "-"))
         wb.save(file_name)
 
     elif out_format == 'csv':
-        file_name = 'hotels-in-macedonia.csv'
+        file_name = 'hotels-in-{country}.txt'.format(country=country.replace(" ", "-"))
         with open(file_name, 'w', encoding='utf-8') as outfile:
             for i, item in enumerate(data):
                 # Extract number and title from string
@@ -119,4 +120,4 @@ def save_data(data, out_format=None):
     print('You can find them in', file_name, 'file')
 
 if __name__ == "__main__":
-    get_data()
+    get_data(country="United Arab Emirates")
