@@ -10,7 +10,7 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def get_booking_page(offset):
+def get_booking_page(offset, rooms):
     '''
     Make request to booking page and parse html
     :param offset:
@@ -24,13 +24,15 @@ def get_booking_page(offset):
             '6&checkin_monthday=8&checkin_year=2018&checkout_month=6&' \
             'checkout_monthday=11&checkout_year=2018' \
             '&class_interval=1&dest_id=125&dest_type=country&dtdisc=0&from_sf'\
-            '=1&genius_rate=1&group_adults=2&group_children=0&inac=0&' \
+            '=1&genius_rate=1&no_rooms={rooms}&group_adults=2&group_children=0&inac=0&' \
             'index_postcard=0&label_click=undef' \
             '&no_rooms=1&postcard=0&raw_dest_type=country&room1=' \
             'A%2CA&sb_price' \
             '_type=total&src=searchresults&src_elem=sb&ss=Macedonia&ss_all=' \
             '0&ssb=empty&sshis=0&ssne=Macedonia' \
-            '&ssne_untouched=Macedonia&rows=15&offset=' + str(offset)
+            '&ssne_untouched=Macedonia&rows=15&offset='.format(
+                rooms=rooms
+            ) + str(offset)
     r = requests.get(url, headers=
       {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0)'
                      ' Gecko/20100101 Firefox/48.0'})
@@ -39,13 +41,13 @@ def get_booking_page(offset):
     return parsed_html
 
 
-def get_data():
+def get_data(rooms=1):
     '''
     Get all accomodations in Macedonia and save them in file
     :return: hotels-in-macedonia.{txt/csv/xlsx} file
     '''
     offset = 15
-    parsed_html = get_booking_page(offset)
+    parsed_html = get_booking_page(offset, rooms)
     all_offset = parsed_html.find_all('li', {'class':
                                       'sr_pagination_item'})[-1].get_text()
 
@@ -54,7 +56,7 @@ def get_data():
     for i in range(int(all_offset)):
         offset += 15
         number+=1
-        parsed_html = get_booking_page(offset)
+        parsed_html = get_booking_page(offset, rooms)
         hotel = parsed_html.find_all('div', {'class': 'sr_item'})
 
         for ho in hotel:
