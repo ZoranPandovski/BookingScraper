@@ -6,6 +6,7 @@
 #import os
 #os.system('pip install -r ./requirements.txt')
 
+import argparse
 import requests
 from bs4 import BeautifulSoup
 
@@ -42,7 +43,7 @@ def get_booking_page(offset, rooms, country):
     return parsed_html
 
 
-def get_data(rooms=1, country='Macedonia'):
+def get_data(rooms=1, country='Macedonia', out_format=None):
     '''
     Get all accomodations in Macedonia and save them in file
     :return: hotels-in-macedonia.{txt/csv/xlsx} file
@@ -65,7 +66,7 @@ def get_data(rooms=1, country='Macedonia'):
             hotels.add(str(number) + ' : ' + name)
             number += 1
 
-    save_data(hotels, country=country)
+    save_data(hotels, out_format=out_format, country=country)
 
 
 def save_data(data, out_format=None, country='Macedonia'):
@@ -120,4 +121,19 @@ def save_data(data, out_format=None, country='Macedonia'):
     print('You can find them in', file_name, 'file')
 
 if __name__ == "__main__":
-    get_data(country="United Arab Emirates")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("rooms",
+                        help='Add the number of rooms to the booking request.',
+                        default=1,
+                        type=int,
+                        nargs='?')
+    parser.add_argument("country",
+                        help='Add the country to the booking request.',
+                        default='Macedonia',
+                        nargs='?')
+    parser.add_argument("out_format",
+                        help='Add the format for the output file. Add excel, json or csv.',
+                        default='json',
+                        nargs='?')
+    args = parser.parse_args()
+    get_data(args.rooms, args.country, args.out_format)
