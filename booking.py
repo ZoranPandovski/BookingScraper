@@ -100,11 +100,11 @@ def save_data(data, out_format=None, country='Macedonia'):
             ws.cell(row=i + 2, column=1).value = n
             ws.cell(row=i + 2, column=2).value = title
 
-        file_name = 'hotels-in-{country}.txt'.format(country=country.replace(" ", "-"))
+        file_name = 'hotels-in-{country}.xls'.format(country=country.replace(" ", "-"))
         wb.save(file_name)
 
     elif out_format == 'csv':
-        file_name = 'hotels-in-{country}.txt'.format(country=country.replace(" ", "-"))
+        file_name = 'hotels-in-{country}.csv'.format(country=country.replace(" ", "-"))
         with open(file_name, 'w', encoding='utf-8') as outfile:
             for i, item in enumerate(data):
                 # Extract number and title from string
