@@ -21,19 +21,6 @@ class BookingTests(unittest.TestCase):
         except AttributeError:
             raise
 
-    def test_get_data(self):
-        ''' Verify get_data
-            :result: True 
-        '''
-        try:
-            assert b.get_data(rooms,country) is not None, 'FAIL'
-        except TypeError:
-            raise
-        except NameError:
-            raise
-        except AttributeError:
-            raise
-
     def test_save_data(self):
         ''' Verify save_data
         '''
@@ -57,8 +44,23 @@ class BookingTests(unittest.TestCase):
         try:
             b.save_data(hotels, out_format='excel', country=country)
             if path.isfile('hotels-in-{}.xls'.format(country)):
-                pass
+                print('XLS - Pass')
         except IOError:
             print('File cannot be read.')
+
+        try:
+            b.save_data(hotels, out_format='csv', country=country)
+            if path.isfile('hotels-in-{}.xls'.format(country)):
+                print('CSV - Pass')
+        except IOError:
+            print('File cannot be read.')
+
+        try:
+            b.save_data(hotels, out_format='json', country=country)
+            if path.isfile('hotels-in-{}.xls'.format(country)):
+                print('JSON - Pass')
+        except IOError:
+            print('File cannot be read.')    
+            
 if __name__ == '__main__':
     unittest.main()
