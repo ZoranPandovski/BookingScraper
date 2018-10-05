@@ -1,6 +1,6 @@
 import unittest
 import booking as b
-from os import path
+import os
 
 offset = 15
 rooms = 2
@@ -9,58 +9,34 @@ country = 'Macedonia'
 class BookingTests(unittest.TestCase):
 
     def test_get_booking_page(self):
-        ''' Verify get_booking_page
-            :return: True
-        '''
+        ''' Verify get_booking_page '''
+        i = b.get_booking_page(offset,rooms,country)
+        assert i is not None, 'Fail'
+
+    def test_get_excel(self):
+        ''' Verify excel output '''
         try:
-            assert b.get_booking_page(offset,rooms,country) is not None, 'FAIL'
-        except TypeError:
-            raise
-        except NameError:
-            raise
-        except AttributeError:
-            raise
-
-    def test_save_data(self):
-        ''' Verify save_data
-        '''
-        offset = 15
-        html = b.get_booking_page(offset,rooms,country)
-        all_offset = html.find_all('li', {'class': 'sr_pagination_item'})[-1].get_text()
-
-        hotels = set()
-        number = 0
-        for i in range(int(all_offset)):
-            offset += 15
-            number+=1
-            parsed_html = b.get_booking_page(offset, rooms, country)
-            hotel = parsed_html.find_all('div', {'class': 'sr_item'})
-
-            for ho in hotel:
-                name = ho.find('a', {'class': 'jq_tooltip'})['title']
-                hotels.add(str(number) + ' : ' + name)
-                number += 1
-
-        try:
-            b.save_data(hotels, out_format='excel', country=country)
-            if path.isfile('hotels-in-{}.xls'.format(country)):
-                print('XLS - Pass')
+            b.get_data(rooms,country,out_format='excel')
+            assert os.path.isfile('hotels-in-{}.xlsx'.format(country)) is True, 'Failure: File does not exist'
         except IOError:
-            print('File cannot be read.')
+            print('Failure: File cannot be read.')
 
+    def test_get_csv(self):
+        ''' Verify csv output '''
         try:
-            b.save_data(hotels, out_format='csv', country=country)
-            if path.isfile('hotels-in-{}.xls'.format(country)):
-                print('CSV - Pass')
+            b.get_data(rooms,country,out_format='csv')
+            assert os.path.isfile('hotels-in-{}.csv'.format(country)) is True, 'Failure: File does not exist'
         except IOError:
-            print('File cannot be read.')
+            print('Failure: File cannot be read.')
 
+    def test_get_default_json(self):
+        ''' Verify json output '''
         try:
-            b.save_data(hotels, out_format='json', country=country)
-            if path.isfile('hotels-in-{}.xls'.format(country)):
-                print('JSON - Pass')
+            b.get_data(rooms,country,out_format='json')
+            assert os.path.isfile('hotels-in-{}.txt'.format(country)) is True, 'Failure: File does not exist'
         except IOError:
-            print('File cannot be read.')    
+            print('Failure: File cannot be read.')    
             
+
 if __name__ == '__main__':
     unittest.main()
