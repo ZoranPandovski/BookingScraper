@@ -64,7 +64,7 @@ def prep_data(rooms=1, country='Macedonia', out_format=None):
             name = ho.find('a', {'class': 'jq_tooltip'})['title']
             hotels.add(str(number) + ' : ' + name)
             number += 1
-        return hotels
+    return hotels
 
 def get_data(rooms=1, country='Macedonia', out_format=None):
     '''
