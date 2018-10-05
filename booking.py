@@ -42,11 +42,10 @@ def get_booking_page(offset, rooms, country):
     parsed_html = BeautifulSoup(html, 'lxml')
     return parsed_html
 
-
-def get_data(rooms=1, country='Macedonia', out_format=None):
+def prep_data(rooms=1, country='Macedonia', out_format=None):
     '''
-    Get all accomodations in Macedonia and save them in file
-    :return: hotels-in-macedonia.{txt/csv/xlsx} file
+    Prepare data for saving
+    :return: hotels: set()
     '''
     offset = 15
     parsed_html = get_booking_page(offset, rooms, country)
@@ -65,7 +64,14 @@ def get_data(rooms=1, country='Macedonia', out_format=None):
             name = ho.find('a', {'class': 'jq_tooltip'})['title']
             hotels.add(str(number) + ' : ' + name)
             number += 1
+        return hotels
 
+def get_data(rooms=1, country='Macedonia', out_format=None):
+    '''
+    Get all accomodations in Macedonia and save them in file
+    :return: hotels-in-macedonia.{txt/csv/xlsx} file
+    '''
+    hotels = prep_data(rooms,country,out_format)
     save_data(hotels, out_format=out_format, country=country)
 
 
