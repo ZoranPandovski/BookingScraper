@@ -6,12 +6,13 @@ offset = 15
 rooms = 2
 country = 'France'
 
+
 class BookingTests(unittest.TestCase):
 
     @classmethod
     def test_get_booking_page(self):
         ''' Verify get_booking_page '''
-        i = b.get_booking_page(offset,rooms,country)
+        i = b.get_booking_page(offset, rooms, country)
         if not i:
             raise AssertionError()
 
@@ -38,6 +39,16 @@ class BookingTests(unittest.TestCase):
         try:
             b.get_data(rooms,country,out_format='csv')
             if not os.path.isfile('hotels-in-{}.csv'.format(country)):
+                raise AssertionError()
+        except IOError:
+            print('Failure: File cannot be read.')
+
+    @classmethod
+    def test_get_xml(self):
+        ''' Verify csv output '''
+        try:
+            b.get_data(rooms, country, out_format='xml')
+            if not os.path.isfile('hotels-in-{}.xml'.format(country)):
                 raise AssertionError()
         except IOError:
             print('Failure: File cannot be read.')

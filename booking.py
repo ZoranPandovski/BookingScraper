@@ -35,12 +35,14 @@ def get_booking_page(offset, rooms, country):
                 rooms=rooms,
                 country=country.replace(' ', '+')
             ) + str(offset)
+    print(url)
     r = requests.get(url, headers=
       {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0)'
                      ' Gecko/20100101 Firefox/48.0'})
     html = r.content
     parsed_html = BeautifulSoup(html, 'lxml')
     return parsed_html
+
 
 def prep_data(rooms=1, country='Macedonia', out_format=None):
     '''
@@ -66,6 +68,7 @@ def prep_data(rooms=1, country='Macedonia', out_format=None):
             number += 1
     return hotels
 
+
 def get_data(rooms=1, country='Macedonia', out_format=None):
     '''
     Get all accomodations in Macedonia and save them in file
@@ -82,6 +85,7 @@ def save_data(data, out_format=None, country='Macedonia'):
     :param out_format: json, csv or excel
     :return:
     '''
+    print(data)
     if out_format == 'json' or out_format is None:
         import json
         file_name = 'hotels-in-{country}.txt'.format(country=country.replace(" ", "-"))
@@ -122,9 +126,25 @@ def save_data(data, out_format=None, country='Macedonia'):
                 s = n + ', ' + title + '\n'
                 outfile.write(s)
 
+    elif out_format == 'xml':
+        import xml.etree.cElementTree as ET
+
+        file_name = 'hotels-in-{country}.xml'.format(country=country.replace(" ", "-"))
+        file_xml = ET.Element(country)
+        for i, item in enumerate(data):
+            tokens = item.split()
+            n = tokens[0]
+            title = ' '.join(tokens[2:]).split(',')
+            doc = ET.SubElement(file_xml, "search", number=n)
+            ET.SubElement(doc, "hotel").text = title[0]
+            ET.SubElement(doc, "city").text = title[1]
+
+        tree = ET.ElementTree(file_xml )
+        tree.write(file_name, encoding='utf-8', xml_declaration=True)
 
     print('All accommodations are saved.')
     print('You can find them in', file_name, 'file')
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -138,7 +158,7 @@ if __name__ == "__main__":
                         default='Macedonia',
                         nargs='?')
     parser.add_argument("out_format",
-                        help='Add the format for the output file. Add excel, json or csv.',
+                        help='Add the format for the output file. Add excel, json, xml or csv.',
                         default='json',
                         nargs='?')
     args = parser.parse_args()
