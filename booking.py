@@ -17,9 +17,8 @@ import requests
 from bs4 import BeautifulSoup
 
 def get_countries():
-    with open("countries.txt") as f:
-         content = f.readlines()
-    countries = [x.strip() for x in content] 
+    with open("countries.txt", "r") as f:
+         countries = f.read().splitlines()
     return countries
 
 def get_booking_page(offset, rooms, country):
