@@ -1,4 +1,5 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python3.6
+# PYTHON_ARGCOMPLETE_OK
 
 # Uncomment for automatic installation of the requirements
 #import sys
@@ -7,9 +8,19 @@
 #os.system('pip install -r ./requirements.txt')
 
 import argparse
+
+import argcomplete
+from argcomplete.completers import ChoicesCompleter
+from argcomplete.completers import EnvironCompleter
+
 import requests
 from bs4 import BeautifulSoup
 
+def get_countries():
+    with open("countries.txt") as f:
+         content = f.readlines()
+    countries = [x.strip() for x in content] 
+    return countries
 
 def get_booking_page(offset, rooms, country):
     '''
@@ -128,18 +139,23 @@ def save_data(data, out_format=None, country='Macedonia'):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("rooms",
+
+    countries = get_countries()
+
+    parser.add_argument("--rooms",
                         help='Add the number of rooms to the booking request.',
                         default=1,
                         type=int,
                         nargs='?')
-    parser.add_argument("country",
+    parser.add_argument("--country",
                         help='Add the country to the booking request.',
                         default='Macedonia',
-                        nargs='?')
-    parser.add_argument("out_format",
+                        nargs='?').completer = ChoicesCompleter(countries)
+    parser.add_argument("--out_format",
                         help='Add the format for the output file. Add excel, json or csv.',
                         default='json',
-                        nargs='?')
+                        choices=['json', 'excel', 'csv'],
+                        nargs='?').completer = EnvironCompleter
+    argcomplete.autocomplete(parser)
     args = parser.parse_args()
     get_data(args.rooms, args.country, args.out_format)
