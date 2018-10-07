@@ -17,6 +17,13 @@ After that just run booking script:
 
 `python booking.py`
 
+## Autocompletion
+If you want to use the feature of the autocompletion run:
+
+`activate-global-python-argcomplete`
+
+After that open new terminal in order to update and load new settings.
+
 ## TBD
 * Add option for choosing which country should be scrapped.
 * Add option for choosing a time frame.
