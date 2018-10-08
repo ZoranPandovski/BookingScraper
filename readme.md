@@ -2,6 +2,7 @@
 [![BCH compliance](https://bettercodehub.com/edge/badge/ZoranPandovski/BookingScraper?branch=master)](https://bettercodehub.com/)
 [![Known Vulnerabilities](https://snyk.io/test/github/ZoranPandovski/BookingScraper/badge.svg?targetFile=requirements.txt)](https://snyk.io/test/github/ZoranPandovski/BookingScraper?targetFile=requirements.txt)
 [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://perso.crans.org/besson/LICENSE.html)
+[![build status](http://img.shields.io/travis/ZoranPandovski/BookingScraper/master.svg?style=flat)](https://travis-ci.org/ZoranPandovski/BookingScraper)
 
 
 # Booking site web scraper
