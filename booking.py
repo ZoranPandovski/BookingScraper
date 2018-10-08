@@ -21,7 +21,7 @@ def get_countries():
          countries = f.read().splitlines()
     return countries
 
-def get_booking_page(offset, rooms, country):
+def get_booking_page(session, offset, rooms, country):
     '''
     Make request to booking page and parse html
     :param offset:
@@ -45,7 +45,7 @@ def get_booking_page(offset, rooms, country):
                 rooms=rooms,
                 country=country.replace(' ', '+')
             ) + str(offset)
-    r = requests.get(url, headers=
+    r = session.get(url, headers=
       {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0)'
                      ' Gecko/20100101 Firefox/48.0'})
     html = r.content
@@ -58,16 +58,19 @@ def prep_data(rooms=1, country='Macedonia', out_format=None):
     :return: hotels: set()
     '''
     offset = 15
-    parsed_html = get_booking_page(offset, rooms, country)
+    
+    session = requests.Session()
+
+    parsed_html = get_booking_page(session, offset, rooms, country)
     all_offset = parsed_html.find_all('li', {'class':
                                       'sr_pagination_item'})[-1].get_text()
-
     hotels = set()
     number = 0
+    
     for i in range(int(all_offset)):
         offset += 15
         number+=1
-        parsed_html = get_booking_page(offset, rooms, country)
+        parsed_html = get_booking_page(session, offset, rooms, country)
         hotel = parsed_html.find_all('div', {'class': 'sr_item'})
 
         for ho in hotel:
