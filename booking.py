@@ -18,7 +18,6 @@ import requests
 import myThread
 from bs4 import BeautifulSoup
 
-
 hotels = []
 
 def get_countries():
@@ -72,8 +71,6 @@ def prep_data(rooms=1, country='Macedonia', out_format=None):
     '''
     offset = 15
     
-    hotels = []
-
     session = requests.Session()
 
     parsed_html = get_booking_page(session, offset, rooms, country)
@@ -89,16 +86,16 @@ def prep_data(rooms=1, country='Macedonia', out_format=None):
         t.start()
     for t in threads:
         t.join()
-
-    print("TOTAL "+ str(len(hotels)))
+    hotels2 = hotels
+    return hotels2
 
 def get_data(rooms=1, country='Macedonia', out_format=None):
     '''
     Get all accomodations in Macedonia and save them in file
     :return: hotels-in-macedonia.{txt/csv/xlsx} file
     '''
-    prep_data(rooms,country,out_format)
-    save_data(hotels, out_format=out_format, country=country)
+    hotels_list = prep_data(rooms,country,out_format)
+    save_data(hotels_list , out_format=out_format, country=country)
 
 
 def save_data(data, out_format=None, country='Macedonia'):
