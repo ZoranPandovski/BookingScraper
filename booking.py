@@ -50,7 +50,7 @@ def get_booking_page(session, offset, rooms, country):
                 rooms=rooms,
                 country=country.replace(' ', '+')
             ) + str(offset)
-    r = session.get(url, headers=
+    r = requests.get(url, headers=
       {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0)'
                      ' Gecko/20100101 Firefox/48.0'})
     html = r.content
@@ -72,6 +72,8 @@ def prep_data(rooms=1, country='Macedonia', out_format=None):
     '''
     offset = 15
     
+    hotels = []
+
     session = requests.Session()
 
     parsed_html = get_booking_page(session, offset, rooms, country)
