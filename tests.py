@@ -4,7 +4,7 @@ import os
 
 offset = 15
 rooms = 2
-country = 'France'
+country = 'Albania'
 
 
 class BookingTests(unittest.TestCase):

@@ -1,4 +1,5 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a17cb028c594405e9235c724d6b45b50)](https://app.codacy.com/app/ZoranPandovski/BookingScraper?utm_source=github.com&utm_medium=referral&utm_content=ZoranPandovski/BookingScraper&utm_campaign=badger)
+[![Build Status](https://travis-ci.org/ZoranPandovski/BookingScraper.svg?branch=master)](https://travis-ci.org/ZoranPandovski/BookingScraper)
 [![BCH compliance](https://bettercodehub.com/edge/badge/ZoranPandovski/BookingScraper?branch=master)](https://bettercodehub.com/)
 [![Known Vulnerabilities](https://snyk.io/test/github/ZoranPandovski/BookingScraper/badge.svg?targetFile=requirements.txt)](https://snyk.io/test/github/ZoranPandovski/BookingScraper?targetFile=requirements.txt)
 [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://perso.crans.org/besson/LICENSE.html)
@@ -6,7 +7,7 @@
 
 # Booking site web scraper
 
-Web scraper that downloads all of the accommodations in Macedonia and saves them in a file.
+Web scraper that downloads all of the accommodations for the chosen country and saves them in a file.
 
 ## Installation
 Create virtual environment and run:
@@ -16,6 +17,13 @@ Create virtual environment and run:
 After that just run booking script:
 
 `python booking.py`
+
+## Autocompletion
+If you want to use the feature of the autocompletion run:
+
+`activate-global-python-argcomplete`
+
+After that open new terminal in order to update and load new settings.
 
 ## TBD
 * Add option for choosing which country should be scrapped.
