@@ -12,16 +12,20 @@ import argparse
 import argcomplete
 from argcomplete.completers import ChoicesCompleter
 from argcomplete.completers import EnvironCompleter
+import threading
 
 import requests
+import myThread
 from bs4 import BeautifulSoup
+
+hotels = []
 
 def get_countries():
     with open("countries.txt", "r") as f:
          countries = f.read().splitlines()
     return countries
 
-def get_booking_page(offset, rooms, country):
+def get_booking_page(session, offset, rooms, country):
     '''
     Make request to booking page and parse html
     :param offset:
@@ -52,37 +56,46 @@ def get_booking_page(offset, rooms, country):
     parsed_html = BeautifulSoup(html, 'lxml')
     return parsed_html
 
+def process_hotels(session, offset, rooms, country):
+    parsed_html = get_booking_page(session, offset, rooms, country)
+    hotel = parsed_html.find_all('div', {'class': 'sr_item'})
+    for ho in hotel:
+        name = ho.find('a', {'class': 'jq_tooltip'})['title']
+        hotels.append(str(len(hotels) + 1) + ' : ' + name)
+
+
 def prep_data(rooms=1, country='Macedonia', out_format=None):
     '''
     Prepare data for saving
     :return: hotels: set()
     '''
     offset = 15
-    parsed_html = get_booking_page(offset, rooms, country)
+    
+    session = requests.Session()
+
+    parsed_html = get_booking_page(session, offset, rooms, country)
     all_offset = parsed_html.find_all('li', {'class':
                                       'sr_pagination_item'})[-1].get_text()
-
-    hotels = set()
     number = 0
+    threads = []
     for i in range(int(all_offset)):
         offset += 15
-        number+=1
-        parsed_html = get_booking_page(offset, rooms, country)
-        hotel = parsed_html.find_all('div', {'class': 'sr_item'})
-
-        for ho in hotel:
-            name = ho.find('a', {'class': 'jq_tooltip'})['title']
-            hotels.add(str(number) + ' : ' + name)
-            number += 1
-    return hotels
+        t = myThread.myThread(session, offset, rooms, country, process_hotels)
+        threads.append(t)
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+    hotels2 = hotels
+    return hotels2
 
 def get_data(rooms=1, country='Macedonia', out_format=None):
     '''
     Get all accomodations in Macedonia and save them in file
     :return: hotels-in-macedonia.{txt/csv/xlsx} file
     '''
-    hotels = prep_data(rooms,country,out_format)
-    save_data(hotels, out_format=out_format, country=country)
+    hotels_list = prep_data(rooms,country,out_format)
+    save_data(hotels_list , out_format=out_format, country=country)
 
 
 def save_data(data, out_format=None, country='Macedonia'):
