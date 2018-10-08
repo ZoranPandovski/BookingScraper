@@ -7,7 +7,7 @@
 
 # Booking site web scraper
 
-Web scraper that downloads all of the accommodations in Macedonia and saves them in a file.
+Web scraper that downloads all of the accommodations for the chosen country and saves them in a file.
 
 ## Installation
 Create virtual environment and run:
