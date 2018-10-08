@@ -1,6 +1,7 @@
 import unittest
 import booking as b
 import os
+import requests
 
 offset = 15
 rooms = 2
@@ -11,7 +12,8 @@ class BookingTests(unittest.TestCase):
     @classmethod
     def test_get_booking_page(self):
         ''' Verify get_booking_page '''
-        i = b.get_booking_page(offset,rooms,country)
+        session = requests.Session()
+        i = b.get_booking_page(session, offset,rooms,country)
         if not i:
             raise AssertionError()
 
