@@ -3,7 +3,7 @@ import threading
 
 class myThread (threading.Thread):
     def __init__(self, session, offset, rooms, country, process_hotels):
-        threading.Thread.__init__(self)
+        super().__init__()
         self.session = session
         self.offset = offset
         self.rooms = rooms

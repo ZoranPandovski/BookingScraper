@@ -14,7 +14,7 @@ from argcomplete.completers import ChoicesCompleter
 from argcomplete.completers import EnvironCompleter
 
 import requests
-import myThread
+from myThread import myThread
 from bs4 import BeautifulSoup
 
 hotels = []
@@ -60,10 +60,12 @@ def get_booking_page(session, offset, rooms, country):
 
 def process_hotels(session, offset, rooms, country):
     parsed_html = get_booking_page(session, offset, rooms, country)
-    hotel = parsed_html.find_all('div', {'class': 'sr_item'})
-    for ho in hotel:
-        name = ho.find('a', {'class': 'jq_tooltip'})['title']
+    entries = parsed_html.find_all('div', {'class': 'sr_item'})
+    for hotel in entries:
+        name = hotel.find('a', {'class': 'jq_tooltip'})['title']
         hotels.append(str(len(hotels) + 1) + ' : ' + name)
+
+    return hotels
 
 
 def prep_data(rooms=1, country='Macedonia', out_format=None):
@@ -82,7 +84,7 @@ def prep_data(rooms=1, country='Macedonia', out_format=None):
     threads = []
     for i in range(int(all_offset)):
         offset += 15
-        t = myThread.myThread(session, offset, rooms, country, process_hotels)
+        t = myThread(session, offset, rooms, country, process_hotels)
         threads.append(t)
     for t in threads:
         t.start()

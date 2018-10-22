@@ -1,7 +1,9 @@
 language: python
 python:
     - "3.6"
-install: 
-- pip install --upgrade pip 
-- pip install -r requirements.txt
-script: python3.6 tests.py
+install:
+- pip install --upgrade pip
+- pip install -r requirements_dev.txt
+script:
+- coverage run tests.py
+- coverage report --include=booking.py,myThread.py -m
