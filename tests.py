@@ -58,6 +58,8 @@ class BookingTests(unittest.TestCase):
     def test_csv_output(self):
         ''' Verify that csv output file contains the expected elements'''
         try:
+            mock_country = 'MacedoniaMock'
+
             mock_data = [
                 '1 : Skopje Panorama, Skopje',
                 '2 : Chic & Cozy Central Loft, Skopje',
@@ -71,11 +73,11 @@ class BookingTests(unittest.TestCase):
                 '10 : Villa Toneli, Skopje'
             ]
 
-            b.save_data(mock_data,out_format='csv',country=country)
-            if not os.path.isfile('hotels-in-{}.txt'.format(country)):
+            b.save_data(mock_data,out_format='csv',country=mock_country)
+            if not os.path.isfile('hotels-in-{}.csv'.format(mock_country)):
                 raise AssertionError()
 
-            with open('hotels-in-{}.csv'.format(country)) as csv_file:
+            with open('hotels-in-{}.csv'.format(mock_country)) as csv_file:
                 csv_reader = csv.reader(csv_file, delimiter=',')
                 line_count = 0
                 for row in csv_reader:
