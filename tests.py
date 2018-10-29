@@ -95,7 +95,7 @@ class BookingTests(unittest.TestCase):
 
                 # Assert that the number of output items is equal to the number of input items.
                 self.assertEqual(len(mock_data),line_count)
-                        
+
         except IOError:
             print('Failure: File cannot be read.')
 
