@@ -4,7 +4,7 @@ import argcomplete
 from argcomplete.completers import ChoicesCompleter
 from argcomplete.completers import EnvironCompleter
 import requests
-import BookingThread
+from bthread import BookingThread
 from bs4 import BeautifulSoup
 from file_writer import FileWriter
 
