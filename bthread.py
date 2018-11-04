@@ -3,7 +3,6 @@ import threading
 
 class BookingThread (threading.Thread):
 
-
    def __init__(self, session, offset, rooms, country, process_hotels):
       threading.Thread.__init__(self)
       self.session = session

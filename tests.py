@@ -8,6 +8,7 @@ offset = 15
 rooms = 2
 country = 'Albania'
 
+
 class BookingTests(unittest.TestCase):
 
     @classmethod

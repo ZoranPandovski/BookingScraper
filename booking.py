@@ -73,7 +73,7 @@ def prep_data(rooms=1, country='Macedonia', out_format=None):
     threads = []
     for i in range(int(all_offset)):
         offset += 15
-        t = BookingThread.myThread(session, offset, rooms, country, process_hotels)
+        t = BookingThread(session, offset, rooms, country, process_hotels)
         threads.append(t)
     for t in threads:
         t.start()
