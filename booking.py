@@ -100,7 +100,7 @@ def save_data(data, out_format, country):
     :return:
     '''
     writer = FileWriter(data, out_format, country)
-    file = writer.output_file
+    file = writer.output_file()
 
     print('All accommodations are saved.')
     print('You can find them in', file, 'file')

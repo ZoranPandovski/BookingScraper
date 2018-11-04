@@ -2,8 +2,8 @@ class FileWriter:
     #TODO: cleanup output_file
     def __init__(self, data, out_format=None, country='Macedonia'):
         self.data = data
-        self.fromat = out_format
-        self.county = country
+        self.format = out_format
+        self.country= country
 
     def output_file(self):
         '''
