@@ -1,29 +1,21 @@
 #! /usr/bin/env python3.6
-# PYTHON_ARGCOMPLETE_OK
-
-# Uncomment for automatic installation of the requirements
-#import sys
-#sys.path.insert(0, "./lib/python3.5/site-packages")
-#import os
-#os.system('pip install -r ./requirements.txt')
-
 import argparse
-
 import argcomplete
 from argcomplete.completers import ChoicesCompleter
 from argcomplete.completers import EnvironCompleter
-import threading
-
 import requests
-import myThread
+import BookingThread
 from bs4 import BeautifulSoup
+from file_writer import FileWriter
 
 hotels = []
+
 
 def get_countries():
     with open("countries.txt", "r") as f:
          countries = f.read().splitlines()
     return countries
+
 
 def get_booking_page(session, offset, rooms, country):
     '''
@@ -56,6 +48,7 @@ def get_booking_page(session, offset, rooms, country):
     parsed_html = BeautifulSoup(html, 'lxml')
     return parsed_html
 
+
 def process_hotels(session, offset, rooms, country):
     parsed_html = get_booking_page(session, offset, rooms, country)
     hotel = parsed_html.find_all('div', {'class': 'sr_item'})
@@ -80,7 +73,7 @@ def prep_data(rooms=1, country='Macedonia', out_format=None):
     threads = []
     for i in range(int(all_offset)):
         offset += 15
-        t = myThread.myThread(session, offset, rooms, country, process_hotels)
+        t = BookingThread.myThread(session, offset, rooms, country, process_hotels)
         threads.append(t)
     for t in threads:
         t.start()
@@ -88,6 +81,7 @@ def prep_data(rooms=1, country='Macedonia', out_format=None):
         t.join()
     hotels2 = hotels
     return hotels2
+
 
 def get_data(rooms=1, country='Macedonia', out_format=None):
     '''
@@ -98,56 +92,18 @@ def get_data(rooms=1, country='Macedonia', out_format=None):
     save_data(hotels_list , out_format=out_format, country=country)
 
 
-def save_data(data, out_format=None, country='Macedonia'):
+def save_data(data, out_format, country):
     '''
     Saves hotels list in file
     :param data: hotels list
     :param out_format: json, csv or excel
     :return:
     '''
-    if out_format == 'json' or out_format is None:
-        import json
-        file_name = 'hotels-in-{country}.txt'.format(country=country.replace(" ", "-"))
-        with open(file_name, 'w', encoding='utf-8') as outfile:
-            json.dump(list(data), outfile, indent=2, ensure_ascii=False)
-
-    elif out_format == 'excel':
-        from openpyxl import Workbook
-        wb = Workbook()
-        ws = wb.active
-
-        heading1 = '#'
-        heading2 = 'Accommodation'
-        ws.cell(row=1, column=1).value = heading1
-        ws.cell(row=1, column=2).value = heading2
-
-        for i, item in enumerate(data):
-            # Extract number and title from string
-            tokens = item.split()
-            n = tokens[0]
-            title = ' '.join(tokens[2:])
-
-            ws.cell(row=i + 2, column=1).value = n
-            ws.cell(row=i + 2, column=2).value = title
-
-        file_name = 'hotels-in-{country}.xls'.format(country=country.replace(" ", "-"))
-        wb.save(file_name)
-
-    elif out_format == 'csv':
-        file_name = 'hotels-in-{country}.csv'.format(country=country.replace(" ", "-"))
-        with open(file_name, 'w', encoding='utf-8') as outfile:
-            for i, item in enumerate(data):
-                # Extract number and title from string
-                tokens = item.split()
-                n = tokens[0]
-                title = ' '.join(tokens[2:])
-
-                s = n + ', ' + title + '\n'
-                outfile.write(s)
-
+    writer = FileWriter(data, out_format, country)
+    file = writer.output_file
 
     print('All accommodations are saved.')
-    print('You can find them in', file_name, 'file')
+    print('You can find them in', file, 'file')
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

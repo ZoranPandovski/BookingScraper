@@ -1,5 +1,9 @@
 import threading
-class myThread (threading.Thread):
+
+
+class BookingThread (threading.Thread):
+
+
    def __init__(self, session, offset, rooms, country, process_hotels):
       threading.Thread.__init__(self)
       self.session = session
@@ -7,6 +11,7 @@ class myThread (threading.Thread):
       self.rooms   = rooms
       self.country = country
       self.process_hotels = process_hotels
+
    def run(self):
       self.process_hotels(self.session, self.offset, self.rooms, self.country)
 
