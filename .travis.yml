@@ -1,7 +1,13 @@
 language: python
 python:
     - "3.6"
+cache: pip
 install: 
-- pip install --upgrade pip 
 - pip install -r requirements.txt
-script: python3.6 tests.py
+- pip install coveralls
+- pip install coverage
+script: 
+- coverage run -m -p unittest tests
+- coverage report -m
+after_success:
+  - coveralls
