@@ -1,3 +1,4 @@
+[![Coverage Status](https://coveralls.io/repos/github/ZoranPandovski/BookingScraper/badge.svg?branch=master)](https://coveralls.io/github/ZoranPandovski/BookingScraper?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a17cb028c594405e9235c724d6b45b50)](https://app.codacy.com/app/ZoranPandovski/BookingScraper?utm_source=github.com&utm_medium=referral&utm_content=ZoranPandovski/BookingScraper&utm_campaign=badger)
 [![Build Status](https://travis-ci.org/ZoranPandovski/BookingScraper.svg?branch=master)](https://travis-ci.org/ZoranPandovski/BookingScraper)
 [![BCH compliance](https://bettercodehub.com/edge/badge/ZoranPandovski/BookingScraper?branch=master)](https://bettercodehub.com/)
