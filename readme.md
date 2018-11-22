@@ -27,12 +27,8 @@ If you want to use the feature of the autocompletion run:
 After that open new terminal in order to update and load new settings.
 
 ## TBD
-* Add option for choosing which country should be scrapped.
 * Add option for choosing a time frame.
 * Add option for choosing the number of rooms.
-* Add option for choosing file format.
-* Setup travis ci
-* Add tests
 
 ## Disclaimer
 Data fetched from booking is only for personal use, you are not allowed to copy and paste content from Booking.com on to your own or third party pages (including social media pages such as Facebook, Twitter, Instagram etc.).
