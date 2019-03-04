@@ -1,5 +1,5 @@
 lxml
 bs4
 requests
-openpyxl==2.6.0
+openpyxl==2.6.1
 argcomplete==1.9.4
