@@ -1,6 +1,6 @@
+[![Build Status](https://img.shields.io/travis/ZoranPandovski/BookingScraper/master.svg?logo=travis)](https://travis-ci.org/ZoranPandovski/BookingScraper)
 [![Coverage Status](https://coveralls.io/repos/github/ZoranPandovski/BookingScraper/badge.svg?branch=master)](https://coveralls.io/github/ZoranPandovski/BookingScraper?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a17cb028c594405e9235c724d6b45b50)](https://app.codacy.com/app/ZoranPandovski/BookingScraper?utm_source=github.com&utm_medium=referral&utm_content=ZoranPandovski/BookingScraper&utm_campaign=badger)
-[![Build Status](https://travis-ci.org/ZoranPandovski/BookingScraper.svg?branch=master)](https://travis-ci.org/ZoranPandovski/BookingScraper)
 [![BCH compliance](https://bettercodehub.com/edge/badge/ZoranPandovski/BookingScraper?branch=master)](https://bettercodehub.com/)
 [![Known Vulnerabilities](https://snyk.io/test/github/ZoranPandovski/BookingScraper/badge.svg?targetFile=requirements.txt)](https://snyk.io/test/github/ZoranPandovski/BookingScraper?targetFile=requirements.txt)
 [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://perso.crans.org/besson/LICENSE.html)
