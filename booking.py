@@ -69,7 +69,6 @@ def prep_data(rooms=1, country='Macedonia', out_format=None):
     parsed_html = get_booking_page(session, offset, rooms, country)
     all_offset = parsed_html.find_all('li', {'class':
                                       'sr_pagination_item'})[-1].get_text().splitlines()[-1]
-    number = 0
     threads = []
     for i in range(int(all_offset)):
         offset += 15
