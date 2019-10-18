@@ -16,7 +16,7 @@ class FileWriter:
             import json
             file_name = 'hotels-in-{country}.txt'.format(
                 country=self.country.replace(" ", "-"))
-            with open(file_name, 'w', encoding='utf-8') as outfile:
+            with open(file_name, 'w') as outfile:
                 json.dump(list(self.data), outfile, indent=2, ensure_ascii=False)
         elif format == 'excel':
             from openpyxl import Workbook
@@ -43,7 +43,7 @@ class FileWriter:
         elif format == 'csv':
             file_name = 'hotels-in-{country}.csv'.format(
                 country=self.country.replace(" ", "-"))
-            with open(file_name, 'w', encoding='utf-8') as outfile:
+            with open(file_name, 'w') as outfile:
                 for i, item in enumerate(self.data):
                     # Extract number and title from string
                     tokens = item.split()
