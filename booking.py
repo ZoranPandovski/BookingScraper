@@ -53,7 +53,7 @@ def process_hotels(session, offset, rooms, country):
     parsed_html = get_booking_page(session, offset, rooms, country)
     hotel = parsed_html.find_all('div', {'class': 'sr_item'})
     for ho in hotel:
-        name = ho.find('a', {'class': 'jq_tooltip'})['title']
+        name = ho.find('a', {'class': 'jq_tooltip'})['data-title']
         hotels.append(str(len(hotels) + 1) + ' : ' + name)
 
 
