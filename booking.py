@@ -1,17 +1,23 @@
-#! /usr/bin/env python3
-
-# Uncomment for automatic installation of the requirements
-#import sys
-#sys.path.insert(0, "./lib/python3.5/site-packages")
-#import os
-#os.system('pip install -r ./requirements.txt')
-
+#! /usr/bin/env python3.6
 import argparse
+import argcomplete
+from argcomplete.completers import ChoicesCompleter
+from argcomplete.completers import EnvironCompleter
 import requests
+from bthread import BookingThread
 from bs4 import BeautifulSoup
+from file_writer import FileWriter
+
+hotels = []
 
 
-def get_booking_page(offset, rooms, country):
+def get_countries():
+    with open("countries.txt", "r") as f:
+         countries = f.read().splitlines()
+    return countries
+
+
+def get_booking_page(session, offset, rooms, country):
     '''
     Make request to booking page and parse html
     :param offset:
@@ -42,104 +48,81 @@ def get_booking_page(offset, rooms, country):
     parsed_html = BeautifulSoup(html, 'lxml')
     return parsed_html
 
+
+def process_hotels(session, offset, rooms, country):
+    parsed_html = get_booking_page(session, offset, rooms, country)
+    hotel = parsed_html.find_all('div', {'class': 'sr_item'})
+    for ho in hotel:
+        name = ho.find('a', {'class': 'jq_tooltip'})['title']
+        hotels.append(str(len(hotels) + 1) + ' : ' + name)
+
+
 def prep_data(rooms=1, country='Macedonia', out_format=None):
     '''
     Prepare data for saving
     :return: hotels: set()
     '''
     offset = 15
-    parsed_html = get_booking_page(offset, rooms, country)
-    all_offset = parsed_html.find_all('li', {'class':
-                                      'sr_pagination_item'})[-1].get_text()
+    
+    session = requests.Session()
 
-    hotels = set()
-    number = 0
+    parsed_html = get_booking_page(session, offset, rooms, country)
+    all_offset = parsed_html.find_all('li', {'class':
+                                      'sr_pagination_item'})[-1].get_text().splitlines()[-1]
+    threads = []
     for i in range(int(all_offset)):
         offset += 15
-        number+=1
-        parsed_html = get_booking_page(offset, rooms, country)
-        hotel = parsed_html.find_all('div', {'class': 'sr_item'})
+        t = BookingThread(session, offset, rooms, country, process_hotels)
+        threads.append(t)
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+    hotels2 = hotels
+    return hotels2
 
-        for ho in hotel:
-            name = ho.find('a', {'class': 'jq_tooltip'})['title']
-            hotels.add(str(number) + ' : ' + name)
-            number += 1
-    return hotels
 
 def get_data(rooms=1, country='Macedonia', out_format=None):
     '''
     Get all accomodations in Macedonia and save them in file
     :return: hotels-in-macedonia.{txt/csv/xlsx} file
     '''
-    hotels = prep_data(rooms,country,out_format)
-    save_data(hotels, out_format=out_format, country=country)
+    hotels_list = prep_data(rooms,country,out_format)
+    save_data(hotels_list , out_format=out_format, country=country)
 
 
-def save_data(data, out_format=None, country='Macedonia'):
+def save_data(data, out_format, country):
     '''
     Saves hotels list in file
     :param data: hotels list
     :param out_format: json, csv or excel
     :return:
     '''
-    if out_format == 'json' or out_format is None:
-        import json
-        file_name = 'hotels-in-{country}.txt'.format(country=country.replace(" ", "-"))
-        with open(file_name, 'w', encoding='utf-8') as outfile:
-            json.dump(list(data), outfile, indent=2, ensure_ascii=False)
-
-    elif out_format == 'excel':
-        from openpyxl import Workbook
-        wb = Workbook()
-        ws = wb.active
-
-        heading1 = '#'
-        heading2 = 'Accommodation'
-        ws.cell(row=1, column=1).value = heading1
-        ws.cell(row=1, column=2).value = heading2
-
-        for i, item in enumerate(data):
-            # Extract number and title from string
-            tokens = item.split()
-            n = tokens[0]
-            title = ' '.join(tokens[2:])
-
-            ws.cell(row=i + 2, column=1).value = n
-            ws.cell(row=i + 2, column=2).value = title
-
-        file_name = 'hotels-in-{country}.xls'.format(country=country.replace(" ", "-"))
-        wb.save(file_name)
-
-    elif out_format == 'csv':
-        file_name = 'hotels-in-{country}.csv'.format(country=country.replace(" ", "-"))
-        with open(file_name, 'w', encoding='utf-8') as outfile:
-            for i, item in enumerate(data):
-                # Extract number and title from string
-                tokens = item.split()
-                n = tokens[0]
-                title = ' '.join(tokens[2:])
-
-                s = n + ', ' + title + '\n'
-                outfile.write(s)
-
+    writer = FileWriter(data, out_format, country)
+    file = writer.output_file()
 
     print('All accommodations are saved.')
-    print('You can find them in', file_name, 'file')
+    print('You can find them in', file, 'file')
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("rooms",
+
+    countries = get_countries()
+
+    parser.add_argument("--rooms",
                         help='Add the number of rooms to the booking request.',
                         default=1,
                         type=int,
                         nargs='?')
-    parser.add_argument("country",
+    parser.add_argument("--country",
                         help='Add the country to the booking request.',
                         default='Macedonia',
-                        nargs='?')
-    parser.add_argument("out_format",
+                        nargs='?').completer = ChoicesCompleter(countries)
+    parser.add_argument("--out_format",
                         help='Add the format for the output file. Add excel, json or csv.',
                         default='json',
-                        nargs='?')
+                        choices=['json', 'excel', 'csv'],
+                        nargs='?').completer = EnvironCompleter
+    argcomplete.autocomplete(parser)
     args = parser.parse_args()
     get_data(args.rooms, args.country, args.out_format)
