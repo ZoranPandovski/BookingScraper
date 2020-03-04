@@ -5,7 +5,7 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/ZoranPandovski/BookingScraper/badge.svg?targetFile=requirements.txt)](https://snyk.io/test/github/ZoranPandovski/BookingScraper?targetFile=requirements.txt)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/ZoranPandovski/BookingScraper.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ZoranPandovski/BookingScraper/alerts/)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/ZoranPandovski/BookingScraper.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ZoranPandovski/BookingScraper/context:python)
-
+[![Run on Repl.it](https://repl.it/badge/github/ZoranPandovski/BookingScraper)](https://repl.it/github/ZoranPandovski/BookingScraper)
 # Booking site web scraper
 
 Web scraper that downloads all of the accommodations for the chosen country and saves them in a file.
