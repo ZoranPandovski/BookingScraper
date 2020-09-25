@@ -33,7 +33,7 @@ def default_start_date():
         return today.strftime("%Y-%m-%d")
     except Exception as e:
         msg = "Error creating default date"
-        raise argparse.ArgumentError(msg)
+        raise argparse.ArgumentError(e, msg)
 
 
 def default_end_date():
@@ -42,7 +42,7 @@ def default_end_date():
         return today.strftime("%Y-%m-%d")
     except Exception as e:
         msg = "Error creating default date"
-        raise argparse.ArgumentError(msg)
+        raise argparse.ArgumentError(e, msg)
 
 
 def get_booking_page(session, offset, rooms, country, startdate, enddate):
