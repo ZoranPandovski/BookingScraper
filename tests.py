@@ -26,6 +26,19 @@ class BookingTests(unittest.TestCase):
         assert i
 
     @classmethod
+    def test_default_start_end_date(self):
+        """ Verify Start Date """
+        try:
+            s: str = b.default_start_date()
+            e: str = b.default_end_date()
+            bad_value: str = "as%^of;nae2"
+            # Assertions
+            assert b.valid_date(s)
+            assert b.valid_date(e)
+        except Exception as err:
+            raise ValueError(err)
+
+    @classmethod
     def test_get_excel(self):
         """ Verify excel output """
         try:
