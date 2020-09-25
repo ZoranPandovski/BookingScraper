@@ -27,11 +27,10 @@ class BookingTests(unittest.TestCase):
 
     @classmethod
     def test_default_start_end_date(self):
-        """ Verify Start Date """
+        """ Verify Start/End Date """
         try:
             s: str = b.default_start_date()
             e: str = b.default_end_date()
-            bad_value: str = "as%^of;nae2"
             # Assertions
             assert b.valid_date(s)
             assert b.valid_date(e)
