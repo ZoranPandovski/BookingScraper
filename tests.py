@@ -26,6 +26,12 @@ class BookingTests(unittest.TestCase):
         assert i
 
     @classmethod
+    def test_get_countries(self):
+        """ Get Countries """
+        c: list = b.get_countries()
+        assert c != []
+
+    @classmethod
     def test_default_start_end_date(self):
         """ Verify Start/End Date """
         try:
