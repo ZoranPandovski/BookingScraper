@@ -118,11 +118,13 @@ def prep_data(
     parsed_html = get_booking_page(
         session, offset, rooms, country, start_date, end_date
     )
-    all_offset = (
-        parsed_html.find_all("li", {"class": "sr_pagination_item"})[-1]
-        .get_text()
-        .splitlines()[-1]
-    )
+    pagination_items = parsed_html.find_all("li", {"class": "sr_pagination_item"})
+    if pagination_items:
+        all_offset = (
+            pagination_items[-1].get_text().splitlines()[-1]
+        )
+    else:
+        all_offset = 1
     threads: list = []
     for i in range(int(all_offset)):
         offset += 15
