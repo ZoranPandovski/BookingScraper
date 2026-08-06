@@ -22,7 +22,7 @@ class BookingTests(unittest.TestCase):
     @classmethod
     def test_prep_data(self):
         """ Verify prep_data """
-        i = b.prep_data(rooms, country, start_date, end_date)
+        i: list = b.prep_data(rooms, country, start_date, end_date)
         assert i
 
     @classmethod
@@ -42,6 +42,23 @@ class BookingTests(unittest.TestCase):
             assert b.valid_date(e)
         except Exception as err:
             raise ValueError(err)
+
+    @classmethod
+    def test_prep_data(self):
+        """ Test Process Hotels Method """
+        try:
+            session = requests.Session()
+            out = b.prep_data(
+                rooms,
+                country,
+                'json',
+                b.default_start_date(),
+                b.default_end_date()
+            )
+            assert isinstance(out, list)
+            assert len(out) > 0
+        except Exception as err:
+            raise Exception(err)
 
     @classmethod
     def test_get_excel(self):
